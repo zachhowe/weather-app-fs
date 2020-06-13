@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WeatherApp", "WeatherApp\WeatherApp.fsproj", "{E80AD740-B9B8-4671-8A73-835FBCFA173E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Release|iPhone.ActiveCfg = Release|iPhone
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Release|iPhone.Build.0 = Release|iPhone
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{E80AD740-B9B8-4671-8A73-835FBCFA173E}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal
