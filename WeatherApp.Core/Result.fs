@@ -8,10 +8,18 @@ type Result<'s, 'f> =
         match x with
         | Success(s) -> Some s
         | Failure(_) -> None
+        
+    member x.Error(): 'f option =
+        match x with
+        | Success(_) -> None 
+        | Failure(f) -> Some f
 
 module Result =
     let value (r: Result<_, _>) =
         r.Value()
+
+    let error (r: Result<_, _>) =
+        r.Error()
 
     // convert a single value into a two-track result
     let succeed x = 
@@ -61,7 +69,7 @@ module Result =
         try
             f x |> succeed
         with
-        | ex -> exnHandler ex |> fail
+            ex -> exnHandler ex |> fail
 
     // convert two one-track functions into a two-track function
     let doubleMap successFunc failureFunc =
