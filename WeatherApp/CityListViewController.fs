@@ -2,6 +2,7 @@
 
 open Foundation
 open UIKit
+open WeatherApp.Core
 
 [<Register("CityListViewController")>]
 type CityListViewController(ui: CityListView) =
@@ -11,11 +12,7 @@ type CityListViewController(ui: CityListView) =
 
     override x.LoadView() = x.View <- ui
 
-    override x.ViewDidLoad() = 
+    override _.ViewDidLoad() = 
         base.ViewDidLoad()
-    
-        let result = CityListProvider.getWeather "Mar Vista"
-                     |> Async.RunSynchronously
-        
-        printfn "Result: %s" result.Value.Name
+
     

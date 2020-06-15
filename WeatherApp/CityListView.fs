@@ -18,7 +18,7 @@ type CityListView() as this =
 
         NSLayoutConstraint.ActivateConstraints 
             [|
-                tableView.TopAnchor.ConstraintEqualTo(this.SafeAreaLayoutGuide.TopAnchor)
+                tableView.TopAnchor.ConstraintEqualTo(this.TopAnchor)
                 tableView.LeadingAnchor.ConstraintEqualTo(this.LeadingAnchor) 
                 tableView.TrailingAnchor.ConstraintEqualTo(this.TrailingAnchor)
                 tableView.BottomAnchor.ConstraintEqualTo(this.BottomAnchor)
