@@ -1,6 +1,5 @@
 ﻿namespace WeatherApp.Core
 
-open FSharp.Data
 open System
 
 module UriQueryBuilder =

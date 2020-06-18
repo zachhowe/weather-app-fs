@@ -1,7 +1,7 @@
 ﻿namespace WeatherApp
 
-open UIKit
 open Foundation
+open UIKit
 
 [<Register("AppDelegate")>]
 type AppDelegate() =
