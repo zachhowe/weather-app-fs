@@ -1,18 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="String.fs" />
-    <Compile Include="HttpQueryBuilder.fs" />
-    <Compile Include="Result.fs" />
-    <Compile Include="CityListProvider.fs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="String.fs" />
+		<Compile Include="UriQueryBuilder.fs" />
+		<Compile Include="Types.fs" />
+		<Compile Include="Result.fs" />
+		<Compile Include="CityWeatherType.fs" />
+		<Compile Include="CityList.fs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FSharp.Data" Version="3.3.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FSharp.Control.AsyncSeq" Version="2.0.24" />
+		<PackageReference Include="FSharp.Control.Reactive" Version="4.4.0" />
+		<PackageReference Include="FSharp.Data" Version="3.3.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="4.7.2" />
+	</ItemGroup>
 
 </Project>

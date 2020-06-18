@@ -1,6 +1,6 @@
 ﻿namespace WeatherApp.Core
 
-module HttpQueryBuilder =
+module UriQueryBuilder =
     type QueryItem = string * string
 
     let formatQueryString (items: QueryItem list) =
