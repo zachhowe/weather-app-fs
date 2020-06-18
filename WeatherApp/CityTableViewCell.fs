@@ -4,7 +4,11 @@ open System
 open Foundation
 open UIKit
 
-type CityTableViewCellModel = { Name: string; Status: string; Temperature: string }
+type CityTableViewCellModel = {
+    Name: string
+    Status: string
+    Temperature: string
+}
 
 [<Register("CityTableViewCell")>]
 type CityTableViewCell(style, reuseId : string) as this =
@@ -27,13 +31,13 @@ type CityTableViewCell(style, reuseId : string) as this =
         label.Font <- UIFont.BoldSystemFontOfSize (nfloat (float 20))
         label.TranslatesAutoresizingMaskIntoConstraints <- false
         label
-        
+
     do
         this.BackgroundColor <- UIColor.White
         this.ContentView.AddSubview nameLabel
         this.ContentView.AddSubview statusLabel
         this.ContentView.AddSubview temperatureLabel
-
+        
         NSLayoutConstraint.ActivateConstraints 
             [|
                 nameLabel.TopAnchor.ConstraintEqualTo(this.ContentView.TopAnchor, (nfloat (float 12)))
@@ -48,8 +52,8 @@ type CityTableViewCell(style, reuseId : string) as this =
                 temperatureLabel.TrailingAnchor.ConstraintEqualTo(this.ContentView.TrailingAnchor, (nfloat (float 12))) 
                 temperatureLabel.BottomAnchor.ConstraintEqualTo(this.ContentView.BottomAnchor, (nfloat (float 12)))
             |]
-
-    member _.Configure(viewModel: CityTableViewCellModel) =
+            
+    member __.Configure(viewModel: CityTableViewCellModel) =
         nameLabel.Text <- viewModel.Name
         statusLabel.Text <- viewModel.Status
         temperatureLabel.Text <- viewModel.Temperature

@@ -1,16 +1,16 @@
 namespace WeatherApp.Core
 
-type public City = { 
-    Name: string
+type public City = {
     ID: int
+    Name: string
 }
 
 type public Weather = { 
-    Temp: float
-    FeelsLike: float
+    Temp: decimal
+    FeelsLike: decimal
 }
 
 type public CityWeather = {
-    City: City;
+    City: City
     Weather: Weather
 }

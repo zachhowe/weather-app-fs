@@ -23,3 +23,5 @@ type CityListView() as this =
                 tableView.TrailingAnchor.ConstraintEqualTo(this.TrailingAnchor)
                 tableView.BottomAnchor.ConstraintEqualTo(this.BottomAnchor)
             |]
+    
+    member x.TableView = tableView

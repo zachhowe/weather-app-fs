@@ -29,11 +29,6 @@ module Result =
     let fail x = 
         Failure x
 
-    let recover recoverValue twoTrackInput =
-        match twoTrackInput with
-        | Success s -> s
-        | Failure -> recoverValue
-
     // apply either a success function or failure function
     let either successFunc failureFunc twoTrackInput =
         match twoTrackInput with
