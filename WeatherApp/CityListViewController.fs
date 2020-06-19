@@ -1,6 +1,5 @@
 ﻿namespace WeatherApp
 
-open CoreFoundation
 open FSharp.Control.Reactive
 open Foundation
 open System
@@ -8,9 +7,6 @@ open System.Reactive.Disposables
 open UIKit
 open WeatherApp.Core
 
-module Dispatch =
-    let mainAsync (x: unit -> unit) = 
-        DispatchQueue.MainQueue.DispatchAsync x
 
 [<Register("CityListViewController")>]
 type CityListViewController(ui: CityListView) =

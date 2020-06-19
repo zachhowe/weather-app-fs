@@ -82,6 +82,7 @@
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
+    <Compile Include="Dispatch.fs" />
     <Compile Include="CityTableViewCell.fs" />
     <Compile Include="CityListView.fs" />
     <Compile Include="CityListViewController.fs" />
