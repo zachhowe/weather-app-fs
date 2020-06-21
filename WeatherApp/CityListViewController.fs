@@ -18,17 +18,18 @@ type CityListViewController(ui: CityListView) =
     
     let mutable Weather: CityWeather array = Array.empty
     
-    let dataSource = { new UITableViewDataSource() with
-                           member __.RowsInSection(tableView: UITableView, section: nint) : nint =
+    let tableViewSource = { new UITableViewSource() with
+                           member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
                                nint (Weather |> Array.length)
-                           member __.GetCell(tableView : UITableView, indexPath: NSIndexPath) : UITableViewCell =
+
+                           member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
                                let city = Weather.[indexPath.Row]
                                let cell = tableView.DequeueReusableCell("CityTableViewCell", indexPath) :?> CityTableViewCell
                                cell.Configure { Name = city.City.Name
                                                 Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
                                                 Status = "Cloudy" }
                                cell :> UITableViewCell }
-    
+
     override this.LoadView() =
         this.View <- ui
     
@@ -47,7 +48,7 @@ type CityListViewController(ui: CityListView) =
         base.ViewDidLoad()
         
         ui.TableView.RegisterClassForCellReuse(typedefof<CityTableViewCell>, "CityTableViewCell")
-        ui.TableView.DataSource <- dataSource
+        ui.TableView.Source <- tableViewSource
         
         CityWeatherProvider.getCityWeather (CityIDs [ 5368361; 5391811 ])
         |> Observable.toArray

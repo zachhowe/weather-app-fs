@@ -22,11 +22,11 @@ module internal CityWeatherRequest =
         { City = { ID = city.Id; Name = city.Name }
           Weather = { Temp = city.Main.Temp; FeelsLike = city.Main.FeelsLike } }
 
-    let loadWeather appId query = observe {
-        let url = urlStringForRequest appId query
+    let loadWeather appId request = observe {
+        let url = urlStringForRequest appId request
         let request = CityWeatherType.AsyncLoad url
-                       |> Observable.ofAsync
-                       |> Observable.map convertWireTypeToLocalType
+                      |> Observable.ofAsync
+                      |> Observable.map convertWireTypeToLocalType
         yield! request
     }
     
