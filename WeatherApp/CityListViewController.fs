@@ -7,7 +7,6 @@ open System.Reactive.Disposables
 open UIKit
 open WeatherApp.Core
 
-
 [<Register("CityListViewController")>]
 type CityListViewController(ui: CityListView) =
     inherit UIViewController(null, null)
@@ -16,11 +15,11 @@ type CityListViewController(ui: CityListView) =
     
     let disposeBag = new CompositeDisposable()
     
-    let mutable Weather: CityWeather array = Array.empty
+    let mutable Weather: CityWeather list = List.empty
     
     let tableViewSource = { new UITableViewSource() with
                            member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
-                               nint (Weather |> Array.length)
+                               nint (Weather |> List.length)
 
                            member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
                                let city = Weather.[indexPath.Row]
@@ -33,7 +32,7 @@ type CityListViewController(ui: CityListView) =
     override this.LoadView() =
         this.View <- ui
     
-    member __.AddCells(cityWeathers: CityWeather array) =
+    member __.AddCells(cityWeathers: CityWeather list) =
         printfn "Got data"
         Weather <- cityWeathers
     
@@ -51,6 +50,5 @@ type CityListViewController(ui: CityListView) =
         ui.TableView.Source <- tableViewSource
         
         CityWeatherProvider.getCityWeather (CityIDs [ 5368361; 5391811 ])
-        |> Observable.toArray
         |> Observable.subscribeSafeWithCallbacks this.AddCells this.ErrorLoadingWeather this.CompletedLoading
         |> Disposable.disposeWith disposeBag

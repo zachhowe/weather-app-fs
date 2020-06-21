@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="List.fs" />
+		<Compile Include="Collections.fs" />
 		<Compile Include="String.fs" />
 		<Compile Include="UriQueryBuilder.fs" />
 		<Compile Include="Types.fs" />
@@ -13,6 +13,7 @@
 		<Compile Include="CityWeatherType.fs" />
 		<Compile Include="CityWeatherRequest.fs" />
 		<Compile Include="CityWeatherProvider.fs" />
+		<Compile Include="CityWeatherDataSource.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
