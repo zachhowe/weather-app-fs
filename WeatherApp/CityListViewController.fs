@@ -6,6 +6,7 @@ open System
 open System.Reactive.Disposables
 open UIKit
 open WeatherApp.Core
+open UITableViewExtensions
 
 [<Register("CityListViewController")>]
 type CityListViewController(ui: CityListView) =
@@ -33,13 +34,13 @@ type CityListViewController(ui: CityListView) =
         this.NavigationItem.Title <- "Weather"
 
     member private this.ConfigureTableView() =
-        ui.TableView.RegisterClassForCellReuse(typedefof<CityTableViewCell>, "CityTableViewCell")
+        ui.TableView.RegisterCell typedefof<CityTableViewCell>
         ui.TableView.Source <- { new UITableViewSource() with
             member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
                 nint (this.Weather |> List.length)
             member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
                 let city = this.Weather.[indexPath.Row]
-                let cell = tableView.DequeueReusableCell("CityTableViewCell", indexPath) :?> CityTableViewCell
+                let cell: CityTableViewCell = tableView.DequeueCell(indexPath)
                 cell.Configure { Name = city.City.Name
                                  Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
                                  Status = "Cloudy" }
