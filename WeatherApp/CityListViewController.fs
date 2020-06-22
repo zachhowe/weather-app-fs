@@ -12,43 +12,50 @@ type CityListViewController(ui: CityListView) =
     inherit UIViewController(null, null)
 
     let ui = ui
-    
+
+    let dataSource = CityWeatherDataSource()
     let disposeBag = new CompositeDisposable()
     
     let mutable Weather: CityWeather list = List.empty
     
-    let tableViewSource = { new UITableViewSource() with
-                           member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
-                               nint (Weather |> List.length)
-
-                           member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
-                               let city = Weather.[indexPath.Row]
-                               let cell = tableView.DequeueReusableCell("CityTableViewCell", indexPath) :?> CityTableViewCell
-                               cell.Configure { Name = city.City.Name
-                                                Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
-                                                Status = "Cloudy" }
-                               cell :> UITableViewCell }
-
     override this.LoadView() =
         this.View <- ui
-    
-    member __.AddCells(cityWeathers: CityWeather list) =
-        printfn "Got data"
-        Weather <- cityWeathers
-    
-    member __.ErrorLoadingWeather(error) =
-        printfn "Error getting weather: %s" (string error)
         
-    member __.CompletedLoading() =
-        printfn "Done getting weather"
-        Dispatch.mainAsync ui.TableView.ReloadData
-    
     override this.ViewDidLoad() = 
         base.ViewDidLoad()
         
-        ui.TableView.RegisterClassForCellReuse(typedefof<CityTableViewCell>, "CityTableViewCell")
-        ui.TableView.Source <- tableViewSource
+        this.ConfigureNavigationItem()
+        this.ConfigureTableView()
+        this.ConfigureBindings()
         
-        CityWeatherProvider.getCityWeather (CityIDs [ 5368361; 5391811 ])
-        |> Observable.subscribeSafeWithCallbacks this.AddCells this.ErrorLoadingWeather this.CompletedLoading
+        dataSource.AddCitiesFromQuery (CityIDs [ 5368361; 5391811 ])
+        
+    member private this.ConfigureNavigationItem() =
+        this.NavigationItem.Title <- "Weather"
+
+    member private this.ConfigureTableView() =
+        ui.TableView.RegisterClassForCellReuse(typedefof<CityTableViewCell>, "CityTableViewCell")
+        ui.TableView.Source <- { new UITableViewSource() with
+            member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
+                nint (Weather |> List.length)
+            member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
+                let city = Weather.[indexPath.Row]
+                let cell = tableView.DequeueReusableCell("CityTableViewCell", indexPath) :?> CityTableViewCell
+                cell.Configure { Name = city.City.Name
+                                 Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
+                                 Status = "Cloudy" }
+                cell :> UITableViewCell
+        }
+    
+    member private this.ConfigureBindings() =
+        dataSource.CityWeather
+        |> Observable.subscribeSafeWithError this.AddCells this.ErrorLoadingWeather
         |> Disposable.disposeWith disposeBag
+    
+    member private __.AddCells(cityWeathers: CityWeather list) =
+        printfn "Got data"
+        Weather <- cityWeathers
+        Dispatch.mainAsync ui.TableView.ReloadData
+    
+    member private __.ErrorLoadingWeather(error) =
+        printfn "Error getting weather: %s" (string error)

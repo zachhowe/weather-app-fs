@@ -10,8 +10,11 @@ type AppDelegate() =
     override val Window = null with get, set
     
     override this.FinishedLaunching(_app, _options) =
+        let cityListViewController = new CityListViewController(new CityListView())
+        let navigationController = new UINavigationController(cityListViewController)
+        
         this.Window <- new UIWindow(UIScreen.MainScreen.Bounds)
-        this.Window.RootViewController <- new CityListViewController(new CityListView())
+        this.Window.RootViewController <- navigationController
         this.Window.MakeKeyAndVisible()
 
         true

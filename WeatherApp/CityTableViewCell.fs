@@ -11,8 +11,8 @@ type CityTableViewCellModel = {
 }
 
 [<Register("CityTableViewCell")>]
-type CityTableViewCell(style, reuseId : string) as this =
-    inherit UITableViewCell(style, reuseId)
+type CityTableViewCell(handle: IntPtr) as this =
+    inherit UITableViewCell(handle)
 
     let nameLabel: UILabel =
         let label = new UILabel()
@@ -42,15 +42,15 @@ type CityTableViewCell(style, reuseId : string) as this =
             [|
                 nameLabel.TopAnchor.ConstraintEqualTo(this.ContentView.TopAnchor, (nfloat (float 12)))
                 nameLabel.LeadingAnchor.ConstraintEqualTo(this.ContentView.LeadingAnchor, (nfloat (float 12))) 
-                nameLabel.TrailingAnchor.ConstraintEqualTo(this.ContentView.TrailingAnchor, (nfloat (float 12)))
+                nameLabel.TrailingAnchor.ConstraintEqualTo(this.ContentView.TrailingAnchor, (nfloat (float -12)))
                 
                 statusLabel.TopAnchor.ConstraintEqualTo(nameLabel.BottomAnchor, (nfloat (float 8)))
                 statusLabel.LeadingAnchor.ConstraintEqualTo(this.ContentView.LeadingAnchor, (nfloat (float 12))) 
-                statusLabel.BottomAnchor.ConstraintEqualTo(this.ContentView.BottomAnchor, (nfloat (float 12)))
+                statusLabel.BottomAnchor.ConstraintEqualTo(this.ContentView.BottomAnchor, (nfloat (float -12)))
                 
                 temperatureLabel.CenterYAnchor.ConstraintEqualTo(this.ContentView.CenterYAnchor)
-                temperatureLabel.TrailingAnchor.ConstraintEqualTo(this.ContentView.TrailingAnchor, (nfloat (float 12))) 
-                temperatureLabel.BottomAnchor.ConstraintEqualTo(this.ContentView.BottomAnchor, (nfloat (float 12)))
+                temperatureLabel.TrailingAnchor.ConstraintEqualTo(this.ContentView.TrailingAnchor, (nfloat (float -12))) 
+                temperatureLabel.BottomAnchor.ConstraintEqualTo(this.ContentView.BottomAnchor, (nfloat (float -12)))
             |]
             
     member __.Configure(viewModel: CityTableViewCellModel) =
