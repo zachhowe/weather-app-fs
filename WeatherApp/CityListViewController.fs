@@ -8,15 +8,16 @@ open UIKit
 open WeatherApp.Core
 open UITableViewExtensions
 
+[<Sealed>]
 [<Register("CityListViewController")>]
-type CityListViewController(ui: CityListView) =
+type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource) =
     inherit UIViewController(null, null)
 
     let ui = ui
 
-    member val DataSource = CityWeatherDataSource() with get
+    member val private DataSource = dataSource with get
     member val DisposeBag = new CompositeDisposable() with get
-    member val Weather: CityWeather list = List.empty with get, set
+    member val private Weather: CityWeather list = List.empty with get, set
     
     override this.LoadView() =
         this.View <- ui

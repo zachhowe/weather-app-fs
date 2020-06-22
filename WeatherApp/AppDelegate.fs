@@ -2,7 +2,9 @@
 
 open Foundation
 open UIKit
+open WeatherApp.Core
 
+[<Sealed>]
 [<Register("AppDelegate")>]
 type AppDelegate() =
     inherit UIApplicationDelegate()
@@ -11,7 +13,8 @@ type AppDelegate() =
     
     override this.FinishedLaunching(_app, _options) =
         let cityListView = new CityListView()
-        let cityListViewController = new CityListViewController(cityListView)
+        let dataSource = CityWeatherDataSource()
+        let cityListViewController = new CityListViewController(cityListView, dataSource)
         let navigationController = new UINavigationController(cityListViewController)
         
         this.Window <- new UIWindow(UIScreen.MainScreen.Bounds)

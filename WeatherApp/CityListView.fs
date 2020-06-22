@@ -3,6 +3,7 @@
 open Foundation
 open UIKit
 
+[<Sealed>]
 [<Register("CityListView")>]
 type CityListView() as this =
     inherit UIView()

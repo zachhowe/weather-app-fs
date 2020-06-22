@@ -10,6 +10,7 @@ type CityTableViewCellModel = {
     Temperature: string
 }
 
+[<Sealed>]
 [<Register("CityTableViewCell")>]
 type CityTableViewCell(handle: IntPtr) as this =
     inherit UITableViewCell(handle)
