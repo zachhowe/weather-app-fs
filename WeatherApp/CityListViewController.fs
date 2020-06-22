@@ -13,10 +13,9 @@ type CityListViewController(ui: CityListView) =
 
     let ui = ui
 
-    let dataSource = CityWeatherDataSource()
-    let disposeBag = new CompositeDisposable()
-    
-    let mutable Weather: CityWeather list = List.empty
+    member val DataSource = CityWeatherDataSource() with get
+    member val DisposeBag = new CompositeDisposable() with get
+    member val Weather: CityWeather list = List.empty with get, set
     
     override this.LoadView() =
         this.View <- ui
@@ -28,7 +27,7 @@ type CityListViewController(ui: CityListView) =
         this.ConfigureTableView()
         this.ConfigureBindings()
         
-        dataSource.AddCitiesFromQuery (CityIDs [ 5368361; 5391811 ])
+        this.DataSource.AddCitiesFromQuery (CityIDs [ 5368361; 5391811 ])
         
     member private this.ConfigureNavigationItem() =
         this.NavigationItem.Title <- "Weather"
@@ -37,9 +36,9 @@ type CityListViewController(ui: CityListView) =
         ui.TableView.RegisterClassForCellReuse(typedefof<CityTableViewCell>, "CityTableViewCell")
         ui.TableView.Source <- { new UITableViewSource() with
             member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
-                nint (Weather |> List.length)
+                nint (this.Weather |> List.length)
             member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
-                let city = Weather.[indexPath.Row]
+                let city = this.Weather.[indexPath.Row]
                 let cell = tableView.DequeueReusableCell("CityTableViewCell", indexPath) :?> CityTableViewCell
                 cell.Configure { Name = city.City.Name
                                  Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
@@ -48,13 +47,13 @@ type CityListViewController(ui: CityListView) =
         }
     
     member private this.ConfigureBindings() =
-        dataSource.CityWeather
+        this.DataSource.CityWeather
         |> Observable.subscribeSafeWithError this.AddCells this.ErrorLoadingWeather
-        |> Disposable.disposeWith disposeBag
+        |> Disposable.disposeWith this.DisposeBag
     
-    member private __.AddCells(cityWeathers: CityWeather list) =
-        printfn "Got data"
-        Weather <- cityWeathers
+    member private this.AddCells(cityWeathers: CityWeather list) =
+        printfn "Got data: %d" (cityWeathers |> List.length)
+        this.Weather <- cityWeathers
         Dispatch.mainAsync ui.TableView.ReloadData
     
     member private __.ErrorLoadingWeather(error) =
