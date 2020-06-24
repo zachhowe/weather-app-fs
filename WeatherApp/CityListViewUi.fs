@@ -111,6 +111,8 @@ module CityListViewUi =
 
         let mutable weather: CityWeather list = List.empty
     
+        let refreshData = dataSource.RefreshAll
+        
         let refresh = ui.TableView.ReloadData
 
         let configureNavigationItem =
@@ -156,8 +158,13 @@ module CityListViewUi =
         
             dataSource.AddCitiesFromQuery (CityIDs [ 5368361; 5391811 ])
 
+        let viewWillAppear =
+            refreshData()
+            refresh()
+        
         override __.LoadView() = loadView
         override __.ViewDidLoad() = viewDidLoad
+        override __.ViewWillAppear(_animated) = viewWillAppear
 
     let public create (dataSource: CityWeatherDataSource) =
         let cityListView = new CityListView()
