@@ -18,8 +18,13 @@ module CityListViewUi =
 
     type private CityTableViewCellModel with
         static member FromCityWeather(cityWeather: CityWeather) : CityTableViewCellModel =
+            let temperature =
+                match cityWeather.Weather with
+                | Some(weather) -> sprintf "%d K" (weather.Temp |> Decimal.ToInt32)
+                | None -> "-"
+
             { Name = cityWeather.City.Name
-              Temperature = (sprintf "%d K" (cityWeather.Weather.Temp |> Decimal.ToInt32))
+              Temperature = temperature
               Status = "Cloudy" }
 
     [<Sealed>]

@@ -2,5 +2,5 @@
 
 type public CityWeather = {
     City: City
-    Weather: Weather
+    Weather: Weather option
 }
