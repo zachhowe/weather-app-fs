@@ -24,3 +24,4 @@ module App =
             this.Window.MakeKeyAndVisible()
 
             true
+

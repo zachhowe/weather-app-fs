@@ -99,7 +99,7 @@ module CityListViewUi =
                 |]
     
         member __.TableView = tableView
-
+        
     [<Sealed>]
     [<Register("CityListViewController")>]
     type private CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource) as this =
