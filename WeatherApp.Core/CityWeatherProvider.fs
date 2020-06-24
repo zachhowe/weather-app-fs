@@ -2,16 +2,16 @@
 
 open FSharp.Control
 open FSharp.Control.Reactive
-    
-module public CityWeatherProvider =
-    open CityWeatherApi
-   
-    let private appId = "2095b1e3413a7e02ad01ee92b227a889"
 
-    let private toLoadCityRequest (request: CityWeatherRequest) =
+open CityWeatherApi
+
+type public CityWeatherProvider(appId) =
+    let appId = appId
+
+    let toLoadCityRequest (request: CityWeatherRequest) =
         request.LoadWeather appId
-        
-    let private requestOfQuery query =
+
+    let requestOfQuery query =
         match query with
         | WeatherQuery.Query(query) -> Query query |> List.ofOne
         | WeatherQuery.CityID(cityId) -> CityID cityId |> List.ofOne
@@ -24,3 +24,5 @@ module public CityWeatherProvider =
         |> List.map toLoadCityRequest
         |> Observable.combineLatestSeq
         |> Observable.map List.ofSeq
+
+    member __.GetCityWeather = getCityWeather

@@ -10,10 +10,10 @@ type AppDelegate() =
     inherit UIApplicationDelegate()
 
     override val Window = null with get, set
-    
+
     override this.FinishedLaunching(_app, _options) =
         let cityListView = new CityListView()
-        let dataSource = CityWeatherDataSource()
+        let dataSource = CityWeatherProvider "2095b1e3413a7e02ad01ee92b227a889" |> CityWeatherDataSource
         let cityListViewController = new CityListViewController(cityListView, dataSource)
         let navigationController = new UINavigationController(cityListViewController)
         
