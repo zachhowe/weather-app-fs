@@ -16,7 +16,7 @@ type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource)
     let ui = ui
 
     member val private DataSource = dataSource with get
-    member val DisposeBag = new CompositeDisposable() with get
+    member val private DisposeBag = new CompositeDisposable() with get
     member val private Weather: CityWeather list = List.empty with get, set
     
     override this.LoadView() =

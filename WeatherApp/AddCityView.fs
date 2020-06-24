@@ -25,5 +25,5 @@ type AddCityView() as this =
                 textField.TrailingAnchor.ConstraintEqualTo(this.TrailingAnchor, (nfloat (float -12)))
             |]
     
-    member x.SearchQueryTextField = textField
+    member __.SearchQueryTextField = textField
     

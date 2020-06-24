@@ -14,6 +14,7 @@ module public CityWeatherApi =
     | Query of string
     | CityID of int
     | Location of float * float
+
         member private this.UrlStringForRequest appId =
             let uriString = "https://api.openweathermap.org/data/2.5/weather"
             let apiKey = ("appid", appId)

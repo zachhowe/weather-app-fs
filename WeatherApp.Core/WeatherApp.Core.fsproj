@@ -5,7 +5,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Result.fs" />
 		<Compile Include="Collections.fs" />
 		<Compile Include="String.fs" />
 		<Compile Include="UriQueryBuilder.fs" />
