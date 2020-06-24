@@ -5,16 +5,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="Result.fs" />
 		<Compile Include="Collections.fs" />
 		<Compile Include="String.fs" />
 		<Compile Include="UriQueryBuilder.fs" />
-		<Compile Include="CityWeather.fs" />
 		<Compile Include="Weather.fs" />
 		<Compile Include="City.fs" />
 		<Compile Include="WeatherQuery.fs" />
-		<Compile Include="Result.fs" />
+		<Compile Include="CityWeather.fs" />
 		<Compile Include="CityWeatherType.fs" />
-		<Compile Include="CityWeatherRequest.fs" />
+		<Compile Include="CityWeatherApi.fs" />
 		<Compile Include="CityWeatherProvider.fs" />
 		<Compile Include="CityWeatherDataSource.fs" />
 	</ItemGroup>
