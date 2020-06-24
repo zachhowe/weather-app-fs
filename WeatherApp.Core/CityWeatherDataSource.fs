@@ -8,13 +8,12 @@ open System.Reactive.Subjects
 [<Sealed>]
 type public CityWeatherDataSource() =
     member val private DisposeBag = new CompositeDisposable()
-    
-    member val Cities = new BehaviorSubject<City list>(List.empty)
+
     member val CityWeather = new BehaviorSubject<CityWeather list>(List.empty)
     
     member this.AddCitiesFromQuery(query: WeatherQuery) =
         CityWeatherProvider.getCityWeather query
-        |> Observable.combineLatest this.CityWeather
+        |> Observable.combineLatest (this.CityWeather |> Observable.take 1)
         |> Observable.subscribeSafe (fun (oldWeathers, newWeathers) -> this.CityWeather.OnNext(oldWeathers |> List.append newWeathers))
         |> Disposable.disposeWith this.DisposeBag
     
