@@ -1,8 +1,6 @@
 ﻿namespace WeatherApp.Core
 
-type CityIdentifier = private CityIdentifier of int
-
 type public City = {
-    ID: CityIdentifier
+    ID: int
     Name: string
 }
