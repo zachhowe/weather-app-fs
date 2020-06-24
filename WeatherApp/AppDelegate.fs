@@ -13,7 +13,8 @@ module App =
         override val Window = null with get, set
 
         override this.FinishedLaunching(_app, _options) =
-            let dataSource = CityWeatherProvider "2095b1e3413a7e02ad01ee92b227a889" |> CityWeatherDataSource
+            let provider = CityWeatherProvider "2095b1e3413a7e02ad01ee92b227a889"
+            let dataSource = CityWeatherDataSource provider
             
             let cityListViewController = CityListViewUi.create dataSource
             let navigationController = new UINavigationController(cityListViewController)

@@ -10,7 +10,8 @@ type public CityWeatherDataSource(provider: CityWeatherProvider) =
     let provider = provider
 
     let disposeBag = new CompositeDisposable()
-
+    
+    // TODO: ensure duplicate cities cannot be added
     let cityWeather = new BehaviorSubject<CityWeather list>(List.empty)
 
     let addCitiesFromQuery query =
@@ -19,6 +20,7 @@ type public CityWeatherDataSource(provider: CityWeatherProvider) =
         |> Observable.subscribeSafe (fun (oldWeathers, newWeathers) -> cityWeather.OnNext(oldWeathers |> List.append newWeathers))
         |> Disposable.disposeWith disposeBag
     
+    // TODO: implement refresh
     let refreshAll = ()
 
     member val CityWeather = cityWeather
