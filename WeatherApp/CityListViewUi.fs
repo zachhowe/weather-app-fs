@@ -10,13 +10,13 @@ open WeatherApp.Core
 module CityListViewUi =
     open UITableViewExtensions
 
-    type CityTableViewCellModel = {
+    type private CityTableViewCellModel = {
         Name: string
         Status: string
         Temperature: string
     }
 
-    type CityTableViewCellModel with
+    type private CityTableViewCellModel with
         static member FromCityWeather(cityWeather: CityWeather) : CityTableViewCellModel =
             { Name = cityWeather.City.Name
               Temperature = (sprintf "%d K" (cityWeather.Weather.Temp |> Decimal.ToInt32))
@@ -24,7 +24,7 @@ module CityListViewUi =
 
     [<Sealed>]
     [<Register("CityTableViewCell")>]
-    type CityTableViewCell(handle: IntPtr) as this =
+    type private CityTableViewCell(handle: IntPtr) as this =
         inherit UITableViewCell(handle)
 
         let nameLabel: UILabel =
@@ -73,7 +73,7 @@ module CityListViewUi =
 
     [<Sealed>]
     [<Register("CityListView")>]
-    type CityListView() as this =
+    type private CityListView() as this =
         inherit UIView()
 
         let tableView: UITableView = 
@@ -97,7 +97,7 @@ module CityListViewUi =
 
     [<Sealed>]
     [<Register("CityListViewController")>]
-    type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource) as this =
+    type private CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource) as this =
         inherit UIViewController(null, null)
 
         let ui = ui
@@ -157,4 +157,4 @@ module CityListViewUi =
     let public create (dataSource: CityWeatherDataSource) =
         let cityListView = new CityListView()
         let cityListViewController = new CityListViewController(cityListView, dataSource)
-        cityListViewController
+        cityListViewController :> UIViewController
