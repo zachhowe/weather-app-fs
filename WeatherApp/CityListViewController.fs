@@ -10,53 +10,59 @@ open UITableViewExtensions
 
 [<Sealed>]
 [<Register("CityListViewController")>]
-type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource) =
+type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource) as this =
     inherit UIViewController(null, null)
 
     let ui = ui
+    let dataSource = dataSource
+    let disposeBag = new CompositeDisposable()
 
-    member val private DataSource = dataSource with get
-    member val private DisposeBag = new CompositeDisposable() with get
-    member val private Weather: CityWeather list = List.empty with get, set
+    let mutable weather: CityWeather list = List.empty
     
-    override this.LoadView() =
+    let configureNavigationItem =
+        fun () ->
+            this.NavigationItem.Title <- "Weather"
+    
+    let configureBindings =
+        let onWeatherLoaded cityWeathers =
+            printfn "Got data: %d" (cityWeathers |> List.length)
+            weather <- cityWeathers
+            Dispatch.mainAsync ui.TableView.ReloadData
+            
+        let onErrorLoadingWeather error =
+            printfn "Error getting weather: %s" (string error)
+
+        fun () ->
+            dataSource.CityWeather
+            |> Observable.subscribeSafeWithError onWeatherLoaded onErrorLoadingWeather
+            |> Disposable.disposeWith disposeBag
+
+    let configureTableView = 
+        fun () ->
+            ui.TableView.RegisterCell typedefof<CityTableViewCell>
+            ui.TableView.Source <- { new UITableViewSource() with
+                member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
+                    nint (weather |> List.length)
+                member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
+                    let city = weather.[indexPath.Row]
+                    let cell: CityTableViewCell = tableView.DequeueCell(indexPath)
+                    cell.Configure { Name = city.City.Name
+                                     Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
+                                     Status = "Cloudy" }
+                    cell :> UITableViewCell
+            }
+            
+    let loadView =
         this.View <- ui
-        
-    override this.ViewDidLoad() = 
+
+    let viewDidLoad =
         base.ViewDidLoad()
         
-        this.ConfigureNavigationItem()
-        this.ConfigureTableView()
-        this.ConfigureBindings()
+        configureNavigationItem()
+        configureTableView()
+        configureBindings()
         
-        this.DataSource.AddCitiesFromQuery (CityIDs [ 5368361; 5391811 ])
-        
-    member private this.ConfigureNavigationItem() =
-        this.NavigationItem.Title <- "Weather"
+        dataSource.AddCitiesFromQuery (CityIDs [ 5368361; 5391811 ])
 
-    member private this.ConfigureTableView() =
-        ui.TableView.RegisterCell typedefof<CityTableViewCell>
-        ui.TableView.Source <- { new UITableViewSource() with
-            member __.RowsInSection(_tableView: UITableView, _section: nint) : nint =
-                nint (this.Weather |> List.length)
-            member __.GetCell(tableView: UITableView, indexPath: NSIndexPath) : UITableViewCell =
-                let city = this.Weather.[indexPath.Row]
-                let cell: CityTableViewCell = tableView.DequeueCell(indexPath)
-                cell.Configure { Name = city.City.Name
-                                 Temperature = (sprintf "%d K" (city.Weather.Temp |> Decimal.ToInt32))
-                                 Status = "Cloudy" }
-                cell :> UITableViewCell
-        }
-    
-    member private this.ConfigureBindings() =
-        this.DataSource.CityWeather
-        |> Observable.subscribeSafeWithError this.AddCells this.ErrorLoadingWeather
-        |> Disposable.disposeWith this.DisposeBag
-    
-    member private this.AddCells(cityWeathers: CityWeather list) =
-        printfn "Got data: %d" (cityWeathers |> List.length)
-        this.Weather <- cityWeathers
-        Dispatch.mainAsync ui.TableView.ReloadData
-    
-    member private __.ErrorLoadingWeather(error) =
-        printfn "Error getting weather: %s" (string error)
+    override __.LoadView() = loadView
+    override __.ViewDidLoad() = viewDidLoad
