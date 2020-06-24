@@ -19,6 +19,8 @@ type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource)
 
     let mutable weather: CityWeather list = List.empty
     
+    let refresh = ui.TableView.ReloadData
+
     let configureNavigationItem =
         fun () ->
             this.NavigationItem.Title <- "Weather"
@@ -27,14 +29,14 @@ type CityListViewController(ui: CityListView, dataSource: CityWeatherDataSource)
         let onWeatherLoaded cityWeathers =
             printfn "Got data: %d" (cityWeathers |> List.length)
             weather <- cityWeathers
-            Dispatch.mainAsync ui.TableView.ReloadData
+            Dispatch.mainAsync refresh
             
-        let onErrorLoadingWeather error =
+        let onWeatherLoadError error =
             printfn "Error getting weather: %s" (string error)
 
         fun () ->
             dataSource.CityWeather
-            |> Observable.subscribeSafeWithError onWeatherLoaded onErrorLoadingWeather
+            |> Observable.subscribeSafeWithError onWeatherLoaded onWeatherLoadError
             |> Disposable.disposeWith disposeBag
 
     let configureTableView = 
