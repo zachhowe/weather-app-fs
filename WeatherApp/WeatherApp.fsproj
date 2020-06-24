@@ -84,11 +84,8 @@
     <None Include="Entitlements.plist" />
     <Compile Include="Dispatch.fs" />
     <Compile Include="UITableViewExtensions.fs" />
-    <Compile Include="CityTableViewCell.fs" />
-    <Compile Include="CityListView.fs" />
-    <Compile Include="CityListViewController.fs" />
-    <Compile Include="AddCityView.fs" />
-    <Compile Include="AddCityViewController.fs" />
+    <Compile Include="CityListViewUi.fs" />
+    <Compile Include="AddCityUi.fs" />
     <Compile Include="AppDelegate.fs" />
     <Compile Include="Main.fs" />
     <None Include="packages.config" />
