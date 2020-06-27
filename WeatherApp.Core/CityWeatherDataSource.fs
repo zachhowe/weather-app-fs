@@ -5,6 +5,8 @@ open FSharp.Control.Reactive
 open System.Reactive.Disposables
 open System.Reactive.Subjects
 
+// TODO: implement persistence
+
 [<Sealed>]
 type public CityWeatherDataSource(provider: CityWeatherProvider) =
     let provider = provider

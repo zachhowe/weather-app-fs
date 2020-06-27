@@ -7,8 +7,12 @@ open FSharp.Control.Reactive.Builders
 module public CityWeatherApi =
     type City with
         static member private FromWireType (wire: CityWeatherType.Root) =
-            { City = { ID = wire.Id; Name = wire.Name }
-              Weather = Some { Temp = wire.Main.Temp; FeelsLike = wire.Main.FeelsLike } }
+            { City = { ID = wire.Id
+                       Name = wire.Name
+                       Coordinate = { Latitude = wire.Coord.Lat
+                                      Longitude = wire.Coord.Lon } }
+              Weather = Some { Temp = wire.Main.Temp
+                               FeelsLike = wire.Main.FeelsLike } }
 
     type CityWeatherRequest =
     | Query of string
