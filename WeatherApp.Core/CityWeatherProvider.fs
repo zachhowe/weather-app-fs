@@ -13,10 +13,10 @@ type public CityWeatherProvider(appId) =
 
     let requestOfQuery query =
         match query with
-        | WeatherQuery.Query(query) -> Query query |> List.ofOne
-        | WeatherQuery.CityID(cityId) -> CityID cityId |> List.ofOne
+        | WeatherQuery.Query(query) -> Query query |> List.singleton
+        | WeatherQuery.CityID(cityId) -> CityID cityId |> List.singleton
         | WeatherQuery.CityIDs(cityIds) -> cityIds |> List.map CityID
-        | WeatherQuery.Location(lat, lon) -> Location (lat, lon) |> List.ofOne
+        | WeatherQuery.Location(lat, lon) -> Location (lat, lon) |> List.singleton
 
     let getCityWeather (query: WeatherQuery) = 
         query
