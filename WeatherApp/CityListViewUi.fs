@@ -112,7 +112,7 @@ module CityListViewUi =
 
         let mutable weather: CityWeather list = List.empty
     
-        let refreshData = dataSource.RefreshAll
+        let refreshData = ignore
         
         let refresh = ui.TableView.ReloadData
 
