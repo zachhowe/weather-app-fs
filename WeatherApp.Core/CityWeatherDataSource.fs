@@ -2,32 +2,30 @@ namespace WeatherApp.Core
 
 open FSharp.Control
 open FSharp.Control.Reactive
+open System
 open System.Reactive.Disposables
 open System.Reactive.Subjects
 
-// TODO: implement persistence
-
-[<Sealed>]
-type public CityWeatherDataSource(provider: CityWeatherProvider) =
-    let provider = provider
-
-    let disposeBag = new CompositeDisposable()
+module DataSource =
+    open Provider
     
-    // TODO: ensure duplicate cities cannot be added
-    let cityWeather = new BehaviorSubject<CityWeather list>(List.empty)
+    type public CityWeatherDataSource = {
+        RefreshAll: unit -> unit
+        CityWeather: IObservable<CityWeather list>
+        AddCitiesFromQuery: WeatherQuery -> unit
+    }
 
-    let addCitiesFromQuery query =
+    let addCitiesFromQuery (provider: CityWeatherProvider) (cityWeather: BehaviorSubject<CityWeather list>) (disposeBag: CompositeDisposable) query =
         provider.GetCityWeather query
         |> Observable.combineLatest (cityWeather |> Observable.take 1)
         |> Observable.subscribeSafe (fun (oldWeathers, newWeathers) -> cityWeather.OnNext(oldWeathers |> List.append newWeathers))
         |> Disposable.disposeWith disposeBag
-    
-    // TODO: implement refresh
-    let refreshAll = ()
-
-    member val CityWeather = cityWeather
-
-    member __.AddCitiesFromQuery = addCitiesFromQuery
-    
-    member __.RefreshAll() = refreshAll
         
+    let create provider =
+        let cityWeather = new BehaviorSubject<CityWeather list>(List.empty)
+        let disposeBag = new CompositeDisposable()
+        {
+            RefreshAll = ignore
+            CityWeather = cityWeather
+            AddCitiesFromQuery = addCitiesFromQuery provider cityWeather disposeBag
+        }

@@ -6,6 +6,7 @@ open System
 open System.Reactive.Disposables
 open UIKit
 open WeatherApp.Core
+open WeatherApp.Core.DataSource
 
 module CityListViewUi =
     open UITableViewExtensions

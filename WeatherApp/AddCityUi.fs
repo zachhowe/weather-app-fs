@@ -4,7 +4,7 @@ open Foundation
 open UIKit
 open System
 open System.Reactive.Disposables
-open WeatherApp.Core
+open WeatherApp.Core.DataSource
 
 module AddCityUi =
     [<Sealed>]
