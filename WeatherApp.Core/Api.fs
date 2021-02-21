@@ -2,7 +2,6 @@
 
 open FSharp.Control
 open FSharp.Control.Reactive
-open FSharp.Control.Reactive.Builders
 
 module Api =
     type City with
@@ -27,10 +26,7 @@ module Api =
             | CityID(cityId) -> uriString + "?" + UriQueryBuilder.formatQueryString [ apiKey; ("id", (string cityId)) ]
             | Location(lat, lon) -> uriString + "?" + UriQueryBuilder.formatQueryString [ apiKey; ("lat", (string lat)); ("lon", (string lon))]
         
-        member public this.LoadWeather appId = observe {
-            let url = this.UrlStringForRequest appId
-            let request = CityWeatherType.AsyncLoad url
-                            |> Observable.ofAsync
-                            |> Observable.map City.FromWireType
-            yield! request
-        }
+        member public this.LoadWeather appId =
+            CityWeatherType.AsyncLoad (this.UrlStringForRequest appId)
+            |> Observable.ofAsync
+            |> Observable.map City.FromWireType
