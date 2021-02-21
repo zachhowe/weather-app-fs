@@ -4,7 +4,7 @@ open FSharp.Control
 open FSharp.Control.Reactive
 open FSharp.Control.Reactive.Builders
 
-module public CityWeatherApi =
+module Api =
     type City with
         static member private FromWireType (wire: CityWeatherType.Root) =
             { City = { ID = wire.Id

@@ -4,9 +4,9 @@ open System
 open FSharp.Control
 open FSharp.Control.Reactive
 
-open CityWeatherApi
-
 module Provider =
+    open Api
+    
     type CityWeatherProvider = {
         GetCityWeather: WeatherQuery -> IObservable<CityWeather list>
     }

@@ -12,9 +12,9 @@
 		<Compile Include="WeatherQuery.fs" />
 		<Compile Include="CityWeather.fs" />
 		<Compile Include="CityWeatherType.fs" />
-		<Compile Include="CityWeatherApi.fs" />
-		<Compile Include="CityWeatherProvider.fs" />
-		<Compile Include="CityWeatherDataSource.fs" />
+		<Compile Include="Api.fs" />
+		<Compile Include="Provider.fs" />
+		<Compile Include="DataSource.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
