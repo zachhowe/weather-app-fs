@@ -20,8 +20,7 @@ module DataSource =
         
         let addCitiesFromQuery query =
             provider.GetCityWeather query
-            |> Observable.combineLatest (cityWeather |> Observable.take 1)
-            |> Observable.subscribeSafe (fun (oldWeathers, newWeathers) -> cityWeather.OnNext(oldWeathers |> List.append newWeathers))
+            |> Observable.subscribeSafe (fun newWeathers -> cityWeather.OnNext(cityWeather.Value |> List.append newWeathers))
             |> Disposable.disposeWith disposeBag
         
         {
